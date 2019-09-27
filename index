@@ -29,13 +29,37 @@
       <input class="buton_upload" type='file'  onclick="display_preloader()" accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' onchange='openFile(event)'><br>
     </div>
 
-    <button class="buton_reload" onclick="reload()">Reload</button>
-
+    <button class="buton_action" onclick="reload()">Reload</button>
+    <button class="buton_action" onclick="display_save_form()">Save</button>
   
 </div>
 
+  <div id="save_form" style="display:none;" class="">
+    File name:
+    <input type="text" class="input" id="save_name">
+
+        File format:
+        <div>
+          <label class="container">
+          <input type="radio" name="file_format" id="format_csv" checked>
+          <span class="checkmark"></span>
+          CSV
+          </label>  
+        </div>
+
+        <div>
+          <label class="container">
+          <input type="radio" name="file_format" id="format_html">
+          <span class="checkmark"></span>
+           HTML
+          </label>
+        </div>
+
+        <button class="buton_action" onclick="save()">Save</button>
+  </div>
 
 <style>
+
 
 /* input */
 .input{
@@ -158,7 +182,7 @@
       border-radius: 8px;
 }
 
-.buton_reload
+.buton_action
   {
     background-color: #008CBA;
       border: none;
@@ -178,11 +202,11 @@
   <img id="loading_image" style="display:none" src="ajax-loader.gif" alt="Loading..." />
 </div>
 
-<div id="demo"></div>
+<div id="csv_area"></div>
 
  
 <script>
-
+  var separator="";
 
   var openFile = function(event) {
     var input = event.target;
@@ -192,7 +216,7 @@
 
       var text = reader.result;
 
-    header_tabel='<table id="tabel_csv">';
+    header_tabel='<table contenteditable="true" id="tabel_csv">';
     footer_tabel='</table>';
     
     var rezultat_final='';
@@ -211,9 +235,9 @@ const allLines = variabila.split(/\r\n|\n/);// bucata asta ne ajuta sa facem spl
         });
 rezultat_final=header_tabel.concat(rezultat_final,footer_tabel);
 
-document.getElementById("demo").innerHTML=rezultat_final;//aici e zona in care se scrie textul in consola.  .  . 
+document.getElementById("csv_area").innerHTML=rezultat_final;//aici e zona in care se scrie textul in consola.  .  . 
 
-        hide_preloader();// cand e apelata asta dispare cerculetul .. 
+  document.getElementById("loading_image").style.display = "none";//hide preloader
     };
 
     reader.readAsText(input.files[0]);//NU STIU CE FACE ASTA <
@@ -223,7 +247,7 @@ document.getElementById("demo").innerHTML=rezultat_final;//aici e zona in care s
 
   function separator_elemente_linie(nr_linie,continut)
     {  
-        var separator=descoperire_separator(continut);//asta trebuie sa o modificam mai tarziu probabil va fi paramentru la functie..
+         separator=descoperire_separator(continut);//asta trebuie sa o modificam mai tarziu probabil va fi paramentru la functie..
         
 
 
@@ -272,11 +296,6 @@ function display_preloader()
     document.getElementById("loading_image").style.display = "inline";
   }
 
-function hide_preloader()
-  {
-    document.getElementById("loading_image").style.display = "none";
-  }
-
 function descoperire_separator(text)
   { 
     if(document.getElementById('custom').checked)
@@ -305,5 +324,78 @@ function reload()
   {
     location.reload();
   }
+
+function display_save_form()
+  {
+    document.getElementById("save_form").style.display = "inline";
+  }
+
+function save()
+    { 
+      var filename=document.getElementById("save_name").value;
+      
+      if(!filename)
+       {
+        alert('Insert a name for the file!');
+        return;
+       }
+ 
+        var htmlContent_string = document.getElementById("csv_area").innerHTML;//textul de salvat. . .. ..         
+
+      if(htmlContent=="")
+       {
+         alert('There is no file to save');
+         return;
+       }
+
+var filetype='.csv';
+    if(document.getElementById('format_html').checked) 
+       filetype='.html';
+
+      if(filetype=='.csv')
+        {
+          //prelucrare csv 
+
+          htmlContent_string=htmlContent_string.replace('<table contenteditable="true" id="tabel_csv">',"");  
+          htmlContent_string=htmlContent_string.replace("</table>","");  
+          htmlContent_string=htmlContent_string.replace("<tbody>","");
+          htmlContent_string=htmlContent_string.replace("</tbody>","");
+          //only one apparition max.. 
+
+          for(;;)
+            {
+              if(htmlContent_string.includes("<td>"))
+                {
+                  htmlContent_string=htmlContent_string.replace("<tr>","");
+                  htmlContent_string=htmlContent_string.replace("</tr>","\n");
+                  htmlContent_string=htmlContent_string.replace("<th>",""); 
+                  htmlContent_string=htmlContent_string.replace("<td>","");   
+                  htmlContent_string=htmlContent_string.replace("</th>",separator);   
+                  htmlContent_string=htmlContent_string.replace("</td>",separator);
+                }
+                else 
+                  break;
+              
+            }
+        }
+      else
+        htmlContent_string='<style>#tabel_csv { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; border-collapse: collapse; width: 100%; } #tabel_csv tr:hover {background-color: #ddd;}  #tabel_csv td, #tabel_csv th { border: 1px solid #ddd; padding: 8px; }  #tabel_csv tr:nth-child(even){background-color: #f2f2f2;} #tabel_csv th { padding-top: 12px; padding-bottom: 12px;  text-align: left; background-color: #4CAF50; color: white; } table, th, td { border: 1px solid black;   } </style>'.concat(htmlContent_string);
+        //html format conversion
+
+      var htmlContent = [htmlContent_string];//textul de salvat. . .. ..         
+
+  var bl = new Blob(htmlContent, {type: "text/html"});
+  var a = document.createElement("a");//no idea wtf is this .. 
+  a.href = URL.createObjectURL(bl);
+  a.download = filename.concat(filetype);
+  a.hidden = true;
+  document.body.appendChild(a);
+  a.innerHTML = "Anvelomag.ro";
+  a.click();
+
+  alert("File saved !");
+
+}
+
 
 </script>
