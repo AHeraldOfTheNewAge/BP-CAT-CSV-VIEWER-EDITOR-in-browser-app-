@@ -1,0 +1,309 @@
+
+<div align="left" style=" display:block; background-color: #f44336">
+
+    <div  style="display:inline-block;">
+        <form>
+          <div>
+            <label class="container">
+            <input type="radio" name="separator" id="auto" checked>
+            <span class="checkmark"></span>
+            Auto separator
+            </label>
+              
+          </div>
+          <div>
+            <label class="container">
+            <input type="radio" name="separator" id="custom">
+            <span class="checkmark"></span>
+             Custom separator
+            </label>
+          </div>
+          </form>
+    </div>
+
+    <div style="display: inline-block;">
+        <input type="text" class="input" name="separator_custom" id="field_custom">
+    </div>
+
+    <div  style="display:inline-block;">
+      <input class="buton_upload" type='file'  onclick="display_preloader()" accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' onchange='openFile(event)'><br>
+    </div>
+
+    <button class="buton_reload" onclick="reload()">Reload</button>
+
+  
+</div>
+
+
+<style>
+
+/* input */
+.input{
+  border: 2px solid red;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+
+/* mai jos o sa fie stilul pentru radio button */
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+/* stilul pentru radio button  */
+#tabel_csv {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tabel_csv td, #tabel_csv th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#tabel_csv tr:nth-child(even){background-color: #f2f2f2;}
+
+#tabel_csv tr:hover {background-color: #ddd;}
+
+#tabel_csv th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+    table, th, td {
+      border: 1px solid black;
+    }
+
+
+    /* mai jos punem stilul pentru butonul de incarcare..  */
+
+  .buton_upload 
+  { 
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+}
+
+.buton_reload
+  {
+    background-color: #008CBA;
+      border: none;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+  }
+</style>
+
+<div id="loading" align="center" >
+  <img id="loading_image" style="display:none" src="ajax-loader.gif" alt="Loading..." />
+</div>
+
+<div id="demo"></div>
+
+ 
+<script>
+
+
+  var openFile = function(event) {
+    var input = event.target;
+
+    var reader = new FileReader();
+    reader.onload = function(){
+
+      var text = reader.result;
+
+    header_tabel='<table id="tabel_csv">';
+    footer_tabel='</table>';
+    
+    var rezultat_final='';
+    var variabila=reader.result;
+ 
+
+const allLines = variabila.split(/\r\n|\n/);// bucata asta ne ajuta sa facem split de elemente. . . in cazul in care vom avea probleme la mai multe chestii eliminam const de acolo .. si facem var .. 
+        // Reading line by line
+        var numarator_linie=0;
+        allLines.forEach((line) => {
+
+            var linia_de_prelucrat=separator_elemente_linie(numarator_linie,line);
+
+            rezultat_final=rezultat_final.concat(linia_de_prelucrat);//acum trebuie sa facem modificari pe fiecare linie ca sa putem sa facem parse la csv . .
+            numarator_linie++;
+        });
+rezultat_final=header_tabel.concat(rezultat_final,footer_tabel);
+
+document.getElementById("demo").innerHTML=rezultat_final;//aici e zona in care se scrie textul in consola.  .  . 
+
+        hide_preloader();// cand e apelata asta dispare cerculetul .. 
+    };
+
+    reader.readAsText(input.files[0]);//NU STIU CE FACE ASTA <
+
+  };
+
+
+  function separator_elemente_linie(nr_linie,continut)
+    {  
+        var separator=descoperire_separator(continut);//asta trebuie sa o modificam mai tarziu probabil va fi paramentru la functie..
+        
+
+
+
+       
+
+        for(;;)
+            {
+                if(separator==continut.slice(-1))
+                      continut=continut.slice(0, -1);  
+                else break;     
+            }
+        
+            var double_separator=separator.concat(separator);
+
+        for(;;)
+            {
+                if(continut.includes(double_separator))
+                      continut=continut.replace(double_separator,separator);  
+                else break;     
+            }
+
+        
+        var rezultatul_de_afisat='';
+        array= (continut.split(separator));
+        
+
+        if(nr_linie==0)
+            {   
+                array.forEach(item => rezultatul_de_afisat=rezultatul_de_afisat.concat('<th>',item,'</th>'));
+                rezultatul_de_afisat=('<tr>'.concat(rezultatul_de_afisat,'</tr>'));
+            }
+            
+        else
+            {
+                array.forEach(item => rezultatul_de_afisat=rezultatul_de_afisat.concat('<td>',item,'</td>'));
+                rezultatul_de_afisat=('<tr>'.concat(rezultatul_de_afisat,'</tr>'));
+            }
+            
+
+        return rezultatul_de_afisat;
+    }
+
+function display_preloader()
+  {
+    document.getElementById("loading_image").style.display = "inline";
+  }
+
+function hide_preloader()
+  {
+    document.getElementById("loading_image").style.display = "none";
+  }
+
+function descoperire_separator(text)
+  { 
+    if(document.getElementById('custom').checked)
+      return(document.getElementById("field_custom").value);
+
+      var separatoare=[';',',','|'];
+      var number_of_encounters=[0,0,0];
+
+      for (i = 0; i < separatoare.length; i++) 
+        { 
+          number_of_encounters[i]=text.split(separatoare[i]).length - 1;
+        }
+
+        var biggest_frequency=0;
+
+        for (i = 0; i < separatoare.length-1; i++) 
+          {
+            if(number_of_encounters[i]<number_of_encounters[i+1])
+              biggest_frequency=i+1;
+          }
+
+    return separatoare[biggest_frequency];
+  }
+
+function reload()
+  {
+    location.reload();
+  }
+
+</script>
