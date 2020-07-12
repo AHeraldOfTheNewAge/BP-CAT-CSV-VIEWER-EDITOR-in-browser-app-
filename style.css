@@ -31,7 +31,7 @@
   cursor: pointer;
 }
 
-/* Create a custom radio button */
+/*  custom radio button */
 .checkmark {
   position: absolute;
   top: 0;
@@ -93,7 +93,7 @@
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #4CAF50;
+  background-color: #6e3ae6;
   color: white;
 }
 
@@ -106,7 +106,7 @@
 
   .buton_upload 
   { 
-      background-color: #4CAF50;
+      background-color:  #998cae;
       border: none;
       color: white;
       padding: 20px;
@@ -121,7 +121,7 @@
 
 .buton_action
   {
-    background-color: #008CBA;
+    background-color: #6e3ae6;
       border: none;
       color: white;
       padding: 20px;
