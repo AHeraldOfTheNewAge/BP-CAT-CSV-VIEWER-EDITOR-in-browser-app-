@@ -1,66 +1,71 @@
-<div align="left" style=" display:block; background-color: #706e73">
-    <div  style="display:inline-block;">
-        <form style="color:#fff; padding-top: 10px;">
-            <div>
-              <label class="container">
-              <input type="radio" name="separator" id="auto" checked>
-              <span class="checkmark"></span>
-              Auto separator
-              </label>
-                
-            </div>
-            <div>
-              <label class="container">
-              <input type="radio" name="separator" id="custom">
-              <span class="checkmark"></span>
-              Custom separator
-              </label>
-            </div>
-          </form>
-    </div>
+<head>
+  <title>bp cat csv viewer and editor</title>
+</head>
+<body>
+  <div align="left" style=" display:block; background-color: #706e73">
+      <div  style="display:inline-block;">
+          <form style="color:#fff; padding-top: 10px;">
+              <div>
+                <label class="container">
+                <input type="radio" name="separator" id="auto" checked>
+                <span class="checkmark"></span>
+                Auto separator
+                </label>
+                  
+              </div>
+              <div>
+                <label class="container">
+                <input type="radio" name="separator" id="custom">
+                <span class="checkmark"></span>
+                Custom separator
+                </label>
+              </div>
+            </form>
+      </div>
 
-    <div style="display: inline-block;">
-        <input type="text" class="input" name="separator_custom" id="field_custom">
-    </div>
+      <div style="display: inline-block;">
+          <input type="text" class="input" name="separator_custom" id="field_custom">
+      </div>
 
-    <div  style="display:inline-block;">
-      <input class="buton_upload" type='file'  onclick="display_preloader()" accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' onchange='openFile(event)'><br>
-    </div>
+      <div  style="display:inline-block;">
+        <input class="buton_upload" type='file'  onclick="display_preloader()" accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' onchange='openFile(event)'><br>
+      </div>
 
-    <button class="buton_action" onclick="reload()">Reload</button>
-    <button class="buton_action" onclick="display_save_form()">Save</button>
-    <button class="buton_action" onclick="alert('Instructiuni!');">?</button>
-</div>
-
-  <div id="save_form" style="display:none;" class="">
-    File name:
-    <input type="text" class="input" id="save_name">
-
-        File format:
-        <div>
-          <label class="container">
-          <input type="radio" name="file_format" id="format_csv" checked>
-          <span class="checkmark"></span>
-          CSV
-          </label>  
-        </div>
-
-        <div>
-          <label class="container">
-          <input type="radio" name="file_format" id="format_html">
-          <span class="checkmark"></span>
-           HTML
-          </label>
-        </div>
-
-        <button class="buton_action" onclick="save()">Save</button>
+      <button class="buton_action" onclick="reload()">Reload</button>
+      <button class="buton_action" onclick="display_save_form()">Save</button>
+      <button class="buton_action" onclick="alert('Instructions! \n\nThis app can view and edit CSV files\n\nAfter loading a csv file, in order to load another one the user has to reset the session by pressing the &quot;Reload&quot; button\n\nThe radio button &quot;Auto separator&quot; tries to identify a separator in the csv file, in order to arrange the contents in a table\n\nThe radio button &quot;Custom separator&quot; is used if the app fails to identify a serparator and the csv is displayed with errors, or the user desires to use a custom separator for splitting the text in his own way\n\nNote that in order to use a custom separator, the separator has to be inserted before the user chooses a file to be loaded in the app\n\nThe save button displays the saving options for the current file, the user then has the option to save the csv file as a simple csv file or as a html table (it will apear as it was displayed while editing the table(note that the &quot;bp cat csv viewer and editor&quot; cannot open the type of file produced in this action, it is recomended to have a copy in csv just in case further modifications are required))');">?</button>
   </div>
 
-<div id="loading" align="center" >
-  <img id="loading_image" style="display:none" src="load.gif" alt="Loading..." />
-</div>
+    <div id="save_form" style="display:none;" class="">
+      File name:
+      <input type="text" class="input" id="save_name">
 
-<div id="csv_area"></div>
+          File format:
+          <div>
+            <label class="container">
+            <input type="radio" name="file_format" id="format_csv" checked>
+            <span class="checkmark"></span>
+            CSV
+            </label>  
+          </div>
 
-<link rel="stylesheet" type="text/css" href="style.css">
-<script type="text/javascript" src="processing.js"></script>
+          <div>
+            <label class="container">
+            <input type="radio" name="file_format" id="format_html">
+            <span class="checkmark"></span>
+            HTML
+            </label>
+          </div>
+
+          <button class="buton_action" onclick="save()">Save</button>
+    </div>
+
+  <div id="loading" align="center" >
+    <img id="loading_image" style="display:none" src="load.gif" alt="Loading..." />
+  </div>
+
+  <div id="csv_area"></div>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="text/javascript" src="processing.js"></script>
+</body>

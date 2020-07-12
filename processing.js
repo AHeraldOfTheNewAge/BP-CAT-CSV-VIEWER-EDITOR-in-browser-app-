@@ -158,7 +158,7 @@ var filetype='.csv';
             }
         }
       else
-        htmlContent_string='<style>#tabel_csv { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; border-collapse: collapse; width: 100%; } #tabel_csv tr:hover {background-color: #ddd;}  #tabel_csv td, #tabel_csv th { border: 1px solid #ddd; padding: 8px; }  #tabel_csv tr:nth-child(even){background-color: #f2f2f2;} #tabel_csv th { padding-top: 12px; padding-bottom: 12px;  text-align: left; background-color: #4CAF50; color: white; } table, th, td { border: 1px solid black;   } </style>'.concat(htmlContent_string);
+        htmlContent_string='<style>#tabel_csv { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; border-collapse: collapse; width: 100%; } #tabel_csv tr:hover {background-color: #ddd;}  #tabel_csv td, #tabel_csv th { border: 1px solid #ddd; padding: 8px; }  #tabel_csv tr:nth-child(even){background-color: #f2f2f2;} #tabel_csv th { padding-top: 12px; padding-bottom: 12px;  text-align: left; background-color: #6e3ae6; color: white; } table, th, td { border: 1px solid black;   } </style>'.concat(htmlContent_string);
         //html format conversion
 
       var htmlContent = [htmlContent_string];//textul de salvat. . .. ..         
