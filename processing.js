@@ -33,11 +33,6 @@ reader.onload = function()
     {  
          separator=descoperire_separator(continut);//asta trebuie sa o modificam mai tarziu probabil va fi paramentru la functie..
         
-
-
-
-       
-
         for(;;)
             {
                 if(separator==continut.slice(-1))
