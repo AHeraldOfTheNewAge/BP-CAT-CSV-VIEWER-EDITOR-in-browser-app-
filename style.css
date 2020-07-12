@@ -1,6 +1,6 @@
 /* input */
 .input{
-  border: 2px solid red;
+  border: 2px solid #6e3ae6;
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -49,7 +49,7 @@
 
 /* When the radio button is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  background-color: #2196F3;
+  background-color: #6e3ae6;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -106,7 +106,7 @@
 
   .buton_upload 
   { 
-      background-color:  #998cae;
+      background-color:  #6e3ae6;
       border: none;
       color: white;
       padding: 20px;
