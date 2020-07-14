@@ -1,0 +1,19 @@
+{
+  "name": "bp-cat-csv-viewer-editor",
+  "version": "1.0.0",
+  "description": "Electron app to view and edit csv files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AHeraldOfTheNewAge/BP-CAT-CSV-VIEWER-EDITOR-in-browser-app-.git"
+  },
+  "author": "AHeraldOfTheNewAge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AHeraldOfTheNewAge/BP-CAT-CSV-VIEWER-EDITOR-in-browser-app-/issues"
+  },
+  "homepage": "https://github.com/AHeraldOfTheNewAge/BP-CAT-CSV-VIEWER-EDITOR-in-browser-app-#readme"
+}
